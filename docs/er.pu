@@ -1,0 +1,75 @@
+@startuml 物品管理システム論理設計
+' hide the spot
+hide circle
+
+' avoid problems with angled crows feet
+skinparam linetype ortho
+
+entity user as "ユーザーマスタ" {
+  id: uuidv7 <<PK>>
+  --
+  name: string
+  created_at: datetime 
+  updated_at: datetime
+  deleted_at: datetime <<NULLABLE>>
+  create_user_id: uuidv7
+  update_user_id: uuidv7
+  delete_user_id: uuidv7 <<NULLABLE>>
+}
+
+entity user_login as "ユーザーログイン" {
+  firebase_user_id: string <<PK>>
+  --
+  user_id: uuidv7 <<FK>>
+  created_at: datetime 
+  updated_at: datetime
+  deleted_at: datetime <<NULLABLE>>
+  create_user_id: uuidv7
+  update_user_id: uuidv7
+  delete_user_id: uuidv7 <<NULLABLE>>
+}
+
+entity equipment as "物品マスタ" {
+  id: uuidv7 <<PK>>
+  --
+  name: string
+  description: string <<NULLABLE>>
+  amount: int
+  created_at: datetime 
+  updated_at: datetime
+  deleted_at: datetime <<NULLABLE>>
+  create_user_id: uuidv7
+  update_user_id: uuidv7
+  delete_user_id: uuidv7 <<NULLABLE>>
+}
+
+
+entity equipment_user as "物品貸出履歴" {
+  id: uuidv7 <<PK>>
+  --
+  user_id: uuidv7 <<FK>>
+  equipment_id: uuidv7 <<FK>>
+  amount: int 
+  created_at: datetime 
+  updated_at: datetime
+  deleted_at: datetime <<NULLABLE>> /' 返却日 '/
+  create_user_id: uuidv7
+  update_user_id: uuidv7
+  delete_user_id: uuidv7 <<NULLABLE>> /' 返却したユーザー '/
+}
+
+user ||--|| user_login
+user ||--o{ equipment_user
+equipment ||--o{ equipment_user
+
+/'
+    ### cardinality ###
+    ------   :1
+    ----||   :1 and only 1
+    ----o|   :0 or 1
+    -----{   :many
+    ----|{   :1 or more
+    ----o{   :0 or many
+'/
+
+@enduml
