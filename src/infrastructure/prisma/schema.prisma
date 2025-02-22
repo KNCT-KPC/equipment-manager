@@ -23,6 +23,7 @@ model User {
   update_user_id  String  @default(uuid(7))
   delete_user_id  String  @default(uuid(7))
   user_login User_login?
+  equipment_user Equipment_user[]
 }
 
 model User_login {
@@ -48,12 +49,15 @@ model Equipment {
   create_user_id  String  @default(uuid(7))
   update_user_id  String  @default(uuid(7))
   delete_user_id  String?  @default(uuid(7))
+  equipment_user Equipment_user[]
 }
 
 model  Equipment_user {
   id  String  @id   @default(uuid(7)) 
-  user_id  String  @default(uuid(7))
-  equipment_id  String  @default(uuid(7))
+  user User @relation(fields: [user_id],references: [id])
+  user_id  String  @default(uuid(7)) @unique
+  equipment Equipment @relation(fields: [equipment_id],references: [id])
+  equipment_id  String  @default(uuid(7)) @unique
   amount Int
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
