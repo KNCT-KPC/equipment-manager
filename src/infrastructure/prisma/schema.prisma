@@ -1,0 +1,68 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id  String  @id  @default(uuid(7))
+  name  String
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+  deleted_at  DateTime?
+  create_user_id  String
+  update_user_id  String
+  delete_user_id  String?
+  user_login UserLogin?
+  equipment_user EquipmentUser[]
+}
+
+model UserLogin {
+  firebase_user_id  String  @id
+  user User @relation(fields: [user_id],references: [id])
+  user_id  String  @unique
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+  deleted_at  DateTime?
+  create_user_id  String
+  update_user_id  String
+  delete_user_id String?
+}
+
+model Equipment {
+  id  String  @id  @default(uuid(7))
+  name  String
+  description  String?
+  amount Int
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+  deleted_at  DateTime?
+  create_user_id  String
+  update_user_id  String
+  delete_user_id  String?
+  equipment_user EquipmentUser[]
+}
+
+model  EquipmentUser {
+  id  String  @id  @default(uuid(7)) 
+  user  User  @relation(fields: [user_id],references: [id])
+  user_id  String
+  equipment  Equipment  @relation(fields: [equipment_id],references: [id])
+  equipment_id  String
+  amount  Int
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+  deleted_at  DateTime?
+  create_user_id  String 
+  update_user_id  String
+  delete_user_id  String? 
+}
