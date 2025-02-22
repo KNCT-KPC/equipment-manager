@@ -9,6 +9,56 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
+  provider = "mysql"
   url      = env("DATABASE_URL")
+}
+
+model User {
+  id  String  @id  @default(uuid(7))
+  name  String
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @default(now())
+  deleted_at  DateTime  @default(now())
+  create_user_id  String  @default(uuid(7))
+  update_user_id  String  @default(uuid(7))
+  delete_user_id  String  @default(uuid(7))
+  user_login User_login?
+}
+
+model User_login {
+  firebase_user_id  String  @id
+  user User @relation(fields: [user_id],references: [id])
+  user_id  String  @default(uuid(7))  @unique
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @default(now())
+  deleted_at  DateTime?  @default(now())
+  create_user_id  String  @default(uuid(7))
+  update_user_id  String  @default(uuid(7))
+  delete_user_id String?  @default(uuid(7))
+}
+
+model Equipment {
+  id  String  @id  @default(uuid(7))
+  name  String
+  description  String?
+  amount Int
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @default(now())
+  deleted_at  DateTime?  @default(now())
+  create_user_id  String  @default(uuid(7))
+  update_user_id  String  @default(uuid(7))
+  delete_user_id  String?  @default(uuid(7))
+}
+
+model  Equipment_user {
+  id  String  @id   @default(uuid(7)) 
+  user_id  String  @default(uuid(7))
+  equipment_id  String  @default(uuid(7))
+  amount Int
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+  deleted_at DateTime? @default(now())
+  create_user_id String @default(uuid(7)) 
+  update_user_id String @default(uuid(7))
+  delete_user_id String? @default(uuid(7))
 }
