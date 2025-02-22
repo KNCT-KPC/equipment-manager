@@ -17,25 +17,25 @@ model User {
   id  String  @id  @default(uuid(7))
   name  String
   created_at  DateTime  @default(now())
-  updated_at  DateTime  @default(now())
-  deleted_at  DateTime  @default(now())
-  create_user_id  String  @default(uuid(7))
-  update_user_id  String  @default(uuid(7))
-  delete_user_id  String  @default(uuid(7))
-  user_login User_login?
-  equipment_user Equipment_user[]
+  updated_at  DateTime  @updatedAt
+  deleted_at  DateTime?
+  create_user_id  String
+  update_user_id  String
+  delete_user_id  String?
+  user_login UserLogin?
+  equipment_user EquipmentUser[]
 }
 
-model User_login {
+model UserLogin {
   firebase_user_id  String  @id
   user User @relation(fields: [user_id],references: [id])
-  user_id  String  @default(uuid(7))  @unique
+  user_id  String  @unique
   created_at  DateTime  @default(now())
-  updated_at  DateTime  @default(now())
-  deleted_at  DateTime?  @default(now())
-  create_user_id  String  @default(uuid(7))
-  update_user_id  String  @default(uuid(7))
-  delete_user_id String?  @default(uuid(7))
+  updated_at  DateTime  @updatedAt
+  deleted_at  DateTime?
+  create_user_id  String
+  update_user_id  String
+  delete_user_id String?
 }
 
 model Equipment {
@@ -44,25 +44,25 @@ model Equipment {
   description  String?
   amount Int
   created_at  DateTime  @default(now())
-  updated_at  DateTime  @default(now())
-  deleted_at  DateTime?  @default(now())
-  create_user_id  String  @default(uuid(7))
-  update_user_id  String  @default(uuid(7))
-  delete_user_id  String?  @default(uuid(7))
-  equipment_user Equipment_user[]
+  updated_at  DateTime  @updatedAt
+  deleted_at  DateTime?
+  create_user_id  String
+  update_user_id  String
+  delete_user_id  String?
+  equipment_user EquipmentUser[]
 }
 
-model  Equipment_user {
-  id  String  @id   @default(uuid(7)) 
-  user User @relation(fields: [user_id],references: [id])
-  user_id  String  @default(uuid(7)) @unique
-  equipment Equipment @relation(fields: [equipment_id],references: [id])
-  equipment_id  String  @default(uuid(7)) @unique
-  amount Int
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now())
-  deleted_at DateTime? @default(now())
-  create_user_id String @default(uuid(7)) 
-  update_user_id String @default(uuid(7))
-  delete_user_id String? @default(uuid(7))
+model  EquipmentUser {
+  id  String  @id  @default(uuid(7)) 
+  user  User  @relation(fields: [user_id],references: [id])
+  user_id  String
+  equipment  Equipment  @relation(fields: [equipment_id],references: [id])
+  equipment_id  String
+  amount  Int
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+  deleted_at  DateTime?
+  create_user_id  String 
+  update_user_id  String
+  delete_user_id  String? 
 }
