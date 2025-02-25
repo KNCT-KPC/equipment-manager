@@ -21,6 +21,18 @@ export class Equipment {
       }
     })
   }
+  
+  async Update(id: string, name: string, description: string, amount: number, update_user_id: string){
+    const equipment = await this.prisma.equipment.update({
+      where:{id: id},
+      date:{
+        name : name,
+        description : description,
+        amount : amount,
+        update_user_id : update_user_id
+      }
+    })
+  }
 
 
 }
