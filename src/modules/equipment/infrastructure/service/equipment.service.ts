@@ -44,4 +44,22 @@ export class Equipment {
     console.log(id_text);
     console.log(user_text);
   }
+
+  async Rental(id : string, user : string, equipment : string, amount : number){
+    const equipmentuser = await this.prisma.equipment.create({
+      date: {
+        id : id,
+        user_id : user,
+        equipment : equipment,
+        amount : amount,
+        create_user_id : user
+      }
+    })
+  }
+
+  async Return(id : string){
+    const equipmentuser = await this.prisma.equipment.delete({
+      where: {id : id}
+    })
+  }
 }
