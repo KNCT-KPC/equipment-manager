@@ -21,7 +21,7 @@ export class Equipment {
       }
     })
   }
-  
+
   async Update(id: string, name: string, description: string, amount: number, update_user_id: string){
     const equipment = await this.prisma.equipment.update({
       where:{id: id},
@@ -33,6 +33,15 @@ export class Equipment {
       }
     })
   }
-
-
+  
+  async Delete(id : string, delete_user_id : string){
+    const equipment = await this.prisma.equipment.delete({
+      where: {id: id}
+    })
+    console.log('equipment deleted\n');
+    const id_text : string = `id : ${id}`;
+    const user_text : string = `delete_user : ${delete_user_id}`;
+    console.log(id_text);
+    console.log(user_text);
+  }
 }
