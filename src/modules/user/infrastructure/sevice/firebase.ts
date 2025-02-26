@@ -14,3 +14,5 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const emailAuthProvider = new EmailAuthProvider();
+
+export { auth, emailAuthProvider };
