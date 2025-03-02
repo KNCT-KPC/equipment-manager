@@ -11,3 +11,5 @@ async function getUserIdFromIdToken(idToken) {
     return null;
   }
 }
+
+export { getUserIdFromIdToken };
