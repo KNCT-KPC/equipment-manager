@@ -3,6 +3,56 @@ import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient()
 
 async function main() {
+  await prisma.equipment.deleteMany({});
+  await prisma.user.deleteMany({});
+  await prisma.userLogin.deleteMany({});
+  await prisma.equipmentUser.deleteMany({});
+
+  const user1 = await prisma.user.create({
+    data : {
+      name : "ozeki",
+      create_user_id : "ozeki",
+      update_user_id : ""
+    }});
+
+  const user2 = await prisma.user.create({
+    data : {
+      name : "sakurai",
+      create_user_id : "sakurai",
+      update_user_id : ""
+    }});
+
+  const user3 = await prisma.user.create({
+    data : {
+      name : "sasaki",
+      create_user_id : "sasaki",
+      update_user_id : ""
+    }});
+
+  const login_user1 = await prisma.userLogin.create({
+    data : {
+      firebase_user_id : "ozeki",
+      user_id : user1.id,
+      create_user_id : "ozeki",
+      update_user_id : ""
+    }});
+
+  const login_user2 = await prisma.userLogin.create({
+    data : {
+      firebase_user_id : "sakurai",
+      user_id : user2.id,
+      create_user_id : "sakurai",
+      update_user_id : ""
+    }});
+
+  const login_user3 = await prisma.userLogin.create({
+    data : {
+      firebase_user_id : "sasaki",
+      user_id : user3.id,
+      create_user_id : "sasaki",
+      update_user_id : ""
+    }});
+
   const equipment1 = await prisma.equipment.create({
     data : {
       name : "mac-mini",
@@ -29,6 +79,33 @@ async function main() {
       create_user_id : "ozeki",
       update_user_id : ""
     }});
+  
+  const rental_equipment1 = await prisma.equipmentUser.create({
+    data : {
+      equipment_id : equipment1.id,
+      user_id : user1.id,
+      amount : 1,
+      create_user_id : "ozeki",
+      update_user_id : ""
+    }});
+  
+  const rental_equipment2 = await prisma.equipmentUser.create({
+    data : {
+      equipment_id : equipment2.id,
+      user_id : user2.id,
+      amount : 1,
+      create_user_id : "sakurai",
+      update_user_id : ""
+    }});
+
+    const rental_equipment3 = await prisma.equipmentUser.create({
+      data : {
+        equipment_id : equipment3.id,
+        user_id : user3.id,
+        amount : 1,
+        create_user_id : "sasaki",
+        update_user_id : ""
+      }});
 }
 main()
   .catch((e) => {
