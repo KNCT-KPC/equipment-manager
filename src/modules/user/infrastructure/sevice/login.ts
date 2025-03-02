@@ -1,19 +1,13 @@
-import { auth, emailAuthProvider } from "./firebase";
-import { signInWithEmailAndPassword } from "firebase/auth";
+import { getAuth } from 'firebase-admin/auth';
 
+const auth = getAuth();
 
-const Sigin = () => {
-signInWithEmailAndPassword(auth,email,password)
-  .then((userCredential) => {
-    // Signed in 
-    const user = userCredential.user;
-    // ...
-    return user;
-  })
-  .catch((error) => {
-    const errorCode = error.code;
-    const errorMessage = error.message;
-  });
+async function getUserIdFromIdToken(idToken) {
+  try {
+    const decodedToken = await auth.verifyIdToken(idToken);
+    return decodedToken.uid;
+  } catch (error) {
+    console.error('Error verifying idToken:', error);
+    throw error;
+  }
 }
-
-export { Sigin };
