@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
+// import { Prisma } from '@prisma/client';
 import { PrismaService } from './prisma.service';
 
-
+const prisma = new PrismaService();
 @Injectable()
 export class Equipment {
   constructor(private prisma: PrismaService) {
@@ -12,12 +12,13 @@ export class Equipment {
   async Registration(id: string, name: string, description: string, amount: number, create_user_id: string
   ) {
     const equipment = await this.prisma.equipment.create({
-      date: {
-        id : id,
+      data: {
+        // id : id,
         name : name,
         description : description,
         amount : amount,
-        create_user_id : create_user_id
+        create_user_id : create_user_id,
+        update_user_id : ""
       }
     })
     console.log('equipment registered\n');
@@ -34,7 +35,7 @@ export class Equipment {
   async Update(id: string, name: string, description: string, amount: number, update_user_id: string){
     const equipment = await this.prisma.equipment.update({
       where:{id: id},
-      date:{
+      data: {
         name : name,
         description : description,
         amount : amount,
@@ -63,35 +64,38 @@ export class Equipment {
     console.log(user_text);
   }
 
-  async Rental(id : string, user : string, equipment : string, amount : number){
-    const equipmentuser = await this.prisma.equipment.create({
-      date: {
-        id : id,
-        user_id : user,
-        equipment : equipment,
+  async Rental(user_id : string, equipment : string,  amount : number){
+    const equipmentuser = await this.prisma.equipmentUser.create({
+      data: {
+        user : {connect : {id : user_id}},
+        equipment : {connect : {id : equipment}},
         amount : amount,
-        create_user_id : user
+        create_user_id : user_id,
+        update_user_id : ""
       }
     })
     console.log('equipment rented\n');
-    const id_text : string = `id : ${id}`;
-    const user_text : string = `user : ${user}`;
+    const user_text : string = `user : ${user_id}`;
     const equipment_text : string = `equipment : ${equipment}`;
     const amount_text : string = `amount : ${amount}`;
-    console.log(id_text);
     console.log(user_text);
     console.log(equipment_text);
     console.log(amount_text);
   }
 
   async Return(id : string, user :string, equipment : string){
-    const equipmentuser = await this.prisma.equipment.delete({
+    const equipmentuser = await this.prisma.equipmentUser.delete({
       where: {id : id}
     })
     console.log('equipment returned\n');
     const id_text : string = `id : ${id}`;
     const user_text : string = `user : ${user}`;
+    const equipment_text : string = `equipment : ${equipment}`;
     console.log(id_text);
     console.log(user_text);
+    console.log(equipment_text);
   }
 }
+
+const equipment = new Equipment(prisma);
+export { equipment };
