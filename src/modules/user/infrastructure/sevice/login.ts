@@ -8,6 +8,6 @@ async function getUserIdFromIdToken(idToken) {
     return decodedToken.uid;
   } catch (error) {
     console.error('Error verifying idToken:', error);
-    throw error;
+    return null;
   }
 }
