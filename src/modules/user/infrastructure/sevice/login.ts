@@ -1,10 +1,6 @@
-import * as admin from 'firebase-admin';
-import { firebaseConfig } from './config';
+import { auth } from "./firebase";
 
-admin.initializeApp(firebaseConfig);
-const auth = admin.auth();
-
-async function getUserIdFromIdToken(idToken) {
+async function getUserIdFromIdToken(idToken : string) : Promise<string | null> {
   try {
     const decodedToken = await auth.verifyIdToken(idToken);
     return decodedToken.uid;
