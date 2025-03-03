@@ -52,17 +52,14 @@ export class Equipment {
     console.log(equipmentuser);
   }
 
-  async Return(id : string, user :string, equipment : string){
+  async Return(id : string){
     const equipmentuser = await this.prisma.equipmentUser.delete({
       where: {id : id}
     })
     console.log('equipment returned\n');
     const id_text : string = `id : ${id}`;
-    const user_text : string = `user : ${user}`;
-    const equipment_text : string = `equipment : ${equipment}`;
     console.log(id_text);
-    console.log(user_text);
-    console.log(equipment_text);
+    console.log(equipmentuser);
   }
 }
 
