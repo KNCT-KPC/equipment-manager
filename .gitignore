@@ -54,3 +54,8 @@ pids
 
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
+src/infrastructure/prisma/migrations/migration_lock.toml
+src/infrastructure/prisma/migrations/20250228022226_init/migration.sql
+src/modules/equipment/docker-compose.yaml
+src/modules/equipment/equipment.service.spec.ts
+src/modules/user/infrastructure/service/.env.sample
