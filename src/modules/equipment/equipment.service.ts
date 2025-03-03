@@ -10,27 +10,15 @@ export class Equipment {
     this.prisma = prisma;
   }
 
-  async Registration(name: string, description: string, amount: number, create_user_id: string
-  ) {
+  async Registration(create_data : Prisma.EquipmentCreateInput){
     const equipment = await this.prisma.equipment.create({
-      data: {
-        // id : id,
-        name : name,
-        description : description,
-        amount : amount,
-        create_user_id : create_user_id,
-        update_user_id : ""
-      }
+      data: create_data
     })
     console.log('equipment registered\n');
     const id_text : string = `id : ${equipment.id}`;
-    const name_text : string = `name : ${name}`;
-    const user_text : string = `create_user : ${create_user_id}`;
-    const amount_text : string = `amount : ${amount}`;
+    const data_text : string = `date : ${equipment}`;
     console.log(id_text);
-    console.log(name_text);
-    console.log(user_text);
-    console.log(amount_text);
+    console.log(data_text);
   }
 
   async Update(id: string, update : Prisma.EquipmentUpdateInput){
@@ -56,23 +44,12 @@ export class Equipment {
     console.log(user_text);
   }
 
-  async Rental(user_id : string, equipment : string,  amount : number){
+  async Rental(create_data : Prisma.EquipmentUserCreateInput){
     const equipmentuser = await this.prisma.equipmentUser.create({
-      data: {
-        user : {connect : {id : user_id}},
-        equipment : {connect : {id : equipment}},
-        amount : amount,
-        create_user_id : user_id,
-        update_user_id : ""
-      }
+      data: create_data
     })
     console.log('equipment rented\n');
-    const user_text : string = `user : ${user_id}`;
-    const equipment_text : string = `equipment : ${equipment}`;
-    const amount_text : string = `amount : ${amount}`;
-    console.log(user_text);
-    console.log(equipment_text);
-    console.log(amount_text);
+    console.log(equipmentuser);
   }
 
   async Return(id : string, user :string, equipment : string){
