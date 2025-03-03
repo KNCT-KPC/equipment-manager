@@ -1,13 +1,15 @@
-import { getAuth } from 'firebase-admin/auth';
+import * as admin from 'firebase-admin';
+import { firebaseConfig } from './config';
 
-const auth = getAuth();
+admin.initializeApp(firebaseConfig);
+const auth = admin.auth();
 
 async function getUserIdFromIdToken(idToken) {
   try {
     const decodedToken = await auth.verifyIdToken(idToken);
     return decodedToken.uid;
   } catch (error) {
-    console.error('Error verifying idToken:', error);
+    console.log("User Not Found");
     return null;
   }
 }
