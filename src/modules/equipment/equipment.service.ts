@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 // import { Prisma } from '@prisma/client';
 import { PrismaService } from './prisma.service';
+import { Prisma } from '@prisma/client';
 
 const prisma = new PrismaService();
 @Injectable()
@@ -9,7 +10,7 @@ export class Equipment {
     this.prisma = prisma;
   }
 
-  async Registration(id: string, name: string, description: string, amount: number, create_user_id: string
+  async Registration(name: string, description: string, amount: number, create_user_id: string
   ) {
     const equipment = await this.prisma.equipment.create({
       data: {
@@ -22,7 +23,7 @@ export class Equipment {
       }
     })
     console.log('equipment registered\n');
-    const id_text : string = `id : ${id}`;
+    const id_text : string = `id : ${equipment.id}`;
     const name_text : string = `name : ${name}`;
     const user_text : string = `create_user : ${create_user_id}`;
     const amount_text : string = `amount : ${amount}`;
@@ -32,25 +33,16 @@ export class Equipment {
     console.log(amount_text);
   }
 
-  async Update(id: string, name: string, description: string, amount: number, update_user_id: string){
+  async Update(id: string, update : Prisma.EquipmentUpdateInput){
     const equipment = await this.prisma.equipment.update({
       where:{id: id},
-      data: {
-        name : name,
-        description : description,
-        amount : amount,
-        update_user_id : update_user_id
-      }
+      data: update
     })
     console.log('equipment updated\n');
     const id_text : string = `id : ${id}`;
-    const name_text : string = `name : ${name}`;
-    const user_text : string = `update_user : ${update_user_id}`;
-    const amount_text : string = `amount : ${amount}`;
+    const date_text : string = `date : ${update}`;
     console.log(id_text);
-    console.log(name_text);
-    console.log(user_text);
-    console.log(amount_text);
+    console.log(date_text);
   }
   
   async Delete(id : string, delete_user_id : string){
