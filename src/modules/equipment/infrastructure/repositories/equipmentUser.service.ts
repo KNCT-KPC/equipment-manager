@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../../../infrastructure/prisma/prisma.service';
 import { Prisma } from '@prisma/client';
+import { connect } from 'http2';
 
 const prisma = new PrismaService();
 @Injectable()
@@ -17,9 +18,13 @@ export class EquipmentUserRepository {
     console.log(equipmentuser);
   }
 
-  async Delete(id : string){
-    const equipmentuser = await this.prisma.equipmentUser.delete({
-      where: {id : id}
+  async Delete(id : string, user_id : string){
+    const equipmentuser = await this.prisma.equipmentUser.update({
+      where: {id : id},
+      data : {
+        deleted_at : new Date(),
+        delete_user_id : user_id
+      }
     })
     console.log('equipment returned\n');
     const id_text : string = `id : ${id}`;

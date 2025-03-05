@@ -34,7 +34,9 @@ export class EquipmentRepository {
   async Delete(id : string, delete_user_id : string){
     const equipment = await this.prisma.equipment.update({
       where: {id: id},
-      data: {delete_user_id: delete_user_id}
+      data: {
+        deleted_at: new Date(),
+        delete_user_id: delete_user_id}
     })
     console.log('equipment deleted\n');
     const id_text : string = `id : ${id}`;
