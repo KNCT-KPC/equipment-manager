@@ -1,8 +1,9 @@
 import * as admin from 'firebase-admin';
+import { getApps ,getApp } from 'firebase-admin/app';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class Firebase{
+export class FirebaseService{
   constructor(){
   const firebaseconfig = {
     apikey: process.env.FIREBASE_API_KEY,
@@ -12,7 +13,7 @@ export class Firebase{
     messagingSenderId: process.env.FIREBASE_MESSAGING_SENDER_ID,
     appId: process.env.FIREBASE_APP_ID
   }
-  admin.initializeApp(firebaseconfig);
+  const firebaseAdmin = getApps().length === 0 ? admin.initializeApp(firebaseconfig) : getApp();
 }
   async getAuth(){
     return admin.auth();
