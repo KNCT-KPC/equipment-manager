@@ -4,12 +4,12 @@ import { Prisma } from '@prisma/client';
 
 const prisma = new PrismaService();
 @Injectable()
-export class EquipmentUser {
+export class EquipmentUserRepository {
   constructor(private prisma: PrismaService) {
     this.prisma = prisma;
   }
 
-  async Rental(create_data : Prisma.EquipmentUserCreateInput){
+  async Create(create_data : Prisma.EquipmentUserCreateInput){
     const equipmentuser = await this.prisma.equipmentUser.create({
       data: create_data
     })
@@ -17,7 +17,7 @@ export class EquipmentUser {
     console.log(equipmentuser);
   }
 
-  async Return(id : string){
+  async Delete(id : string){
     const equipmentuser = await this.prisma.equipmentUser.delete({
       where: {id : id}
     })

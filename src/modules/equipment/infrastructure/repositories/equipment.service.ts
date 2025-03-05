@@ -2,14 +2,13 @@ import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../../../infrastructure/prisma/prisma.service';
 import { Prisma } from '@prisma/client';
 
-const prisma = new PrismaService();
 @Injectable()
-export class Equipment {
+export class EquipmentRepository {
   constructor(private prisma: PrismaService) {
     this.prisma = prisma;
   }
 
-  async Registration(create_data : Prisma.EquipmentCreateInput){
+  async Create(create_data : Prisma.EquipmentCreateInput){
     const equipment = await this.prisma.equipment.create({
       data: create_data
     })
@@ -44,5 +43,3 @@ export class Equipment {
     console.log(user_text);
   }
 }
-
-const equipment = new Equipment(prisma);
