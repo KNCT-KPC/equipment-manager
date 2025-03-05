@@ -56,6 +56,3 @@ pids
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 src/infrastructure/prisma/migrations/*
 src/modules/equipment/docker-compose.yaml
-src/infrastructure/prisma/migrations/migration_lock.toml
-src/modules/equipment/prisma.service.ts
-src/modules/equipment/prisma.service.ts
