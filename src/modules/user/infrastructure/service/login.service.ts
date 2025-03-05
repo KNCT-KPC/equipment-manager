@@ -1,9 +1,9 @@
-import { Firebase } from "../../../../infrastructure/firebase/firebase.service";
+import { FirebaseService } from "../../../../infrastructure/firebase/firebase.service";
 import { Injectable } from "@nestjs/common";
 
 @Injectable()
-export class AuthenticationIDToken {
-  constructor(private firebase: Firebase) {
+export class AuthenticationIDTokenService {
+  constructor(private firebase: FirebaseService) {
     this.firebase = firebase;
   }
   async getUserIdFromIdToken(idToken : string) : Promise<string | null> {
