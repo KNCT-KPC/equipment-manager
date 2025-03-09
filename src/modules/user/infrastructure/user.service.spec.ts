@@ -1,21 +1,3 @@
-// import { NestFactory } from "@nestjs/core";
-// import { Handler } from "aws-lambda";
-// import { UserModule } from "../user.module";
-// import { UserRepository } from "./repositories/user.repository";
-
-// export const handler: Handler = async (event) => {
-//   const app = await NestFactory.create(UserModule);
-//   await app.init();
-//   const userRepository = app.get(UserRepository);
-//   await userRepository.Create({name: "akaki",create_user_id: "",update_user_id: ""});
-//   await app.close();
-// };
-
-// describe('UserRepository', () => {
-//   it('should return user from id', async () => {
-//     expect (await handler()).toBeUndefined;
-//   })
-// });
 import { Prisma } from "@prisma/client";
 import { PrismaService } from "../../../infrastructure/prisma/prisma.service";
 
