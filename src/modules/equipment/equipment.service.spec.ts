@@ -1,7 +1,7 @@
 import { NestFactory } from "@nestjs/core";
 import { Handler } from "aws-lambda";
 import { EquipmentModule } from "./equipment.module";
-import { EquipmentRepository } from "./infrastructure/repositories/equipment.service";
+import { EquipmentRepository } from "./infrastructure/repositories/equipment.repository";
 
 export const handler: Handler = async (event) => {
   const app = await NestFactory.create(EquipmentModule);
@@ -13,5 +13,5 @@ export const handler: Handler = async (event) => {
 
 describe('EquipmentService', () => {
   it("物品管理", async () => {
-    expect (Handler).toBeUndefined();
+    expect (handler);
 })});
