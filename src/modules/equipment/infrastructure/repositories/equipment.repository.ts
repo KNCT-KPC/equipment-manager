@@ -44,4 +44,10 @@ export class EquipmentRepository {
     console.log(id_text);
     console.log(user_text);
   }
+
+  async GetByEquipmentId(id: string) {
+    return await this.prisma.equipment.findUnique({
+      where: {id: id}
+    });
+  }
 }

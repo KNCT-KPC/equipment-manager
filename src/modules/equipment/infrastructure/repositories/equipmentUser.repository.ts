@@ -29,4 +29,30 @@ export class EquipmentUserRepository {
     console.log(id_text);
     console.log(equipmentuser);
   }
+  
+  async GetByEquipmentIdAndUserId(equipment_id: string, user_id: string) {
+    return await this.prisma.equipmentUser.findMany({
+      where: {
+        equipment: {
+          id: equipment_id
+        },
+        user: {
+          id: user_id
+        },
+        deleted_at: null
+      }
+    });
+  }
+
+  async AggregateRentAmounts(equipment_id: string) {
+    return await this.prisma.equipmentUser.aggregate({
+      _sum: {
+        amount: true
+      },
+      where: {
+        equipment_id: equipment_id,
+        deleted_at: null
+      }
+    });
+  }
 }
