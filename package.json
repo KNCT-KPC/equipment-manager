@@ -24,7 +24,7 @@
     "@nestjs/core": "^11.0.1",
     "@nestjs/passport": "^11.0.5",
     "@nestjs/platform-express": "^11.0.1",
-    "@prisma/client": "^6.4.1",
+    "@prisma/client": "^6.5.0",
     "aws-lambda": "^1.0.7",
     "express": "^5.0.1",
     "firebase": "^11.3.1",
