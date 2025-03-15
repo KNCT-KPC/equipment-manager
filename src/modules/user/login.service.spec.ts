@@ -1,4 +1,4 @@
-import { getUserIdFromIdToken } from "./infrastructure/sevice/login";
+import { getUserIdFromIdToken } from "./infrastructure/service/login.service";
 
 describe('LoginService', () => {
   it('should return userId from idToken', async () => {
