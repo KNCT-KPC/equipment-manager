@@ -1,6 +1,8 @@
+
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../infrastructure/prisma/prisma.service';
 import { Prisma } from '@prisma/client';
+
 
 @Injectable()
 export class EquipmentUserRepository {
@@ -52,4 +54,5 @@ describe('EquipmentService', () => {
     const prisma = new PrismaService();
     const equipmentUserRepository = new EquipmentUserRepository(prisma);
     expect (await equipmentUserRepository.GetAll());
+
 })});
