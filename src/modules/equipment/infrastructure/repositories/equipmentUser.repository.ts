@@ -16,6 +16,22 @@ export class EquipmentUserRepository {
     console.log(equipmentuser);
   }
 
+  async GetAll(){
+    const equipmentusers = await this.prisma.equipmentUser.findMany(
+      {
+        select: {
+          user_id: true,
+          equipment_id: true,
+          created_at: true,
+          deleted_at: true
+        }
+      }
+    );
+    console.log('all equipment users returned\n');
+    console.log(JSON.stringify(equipmentusers));
+    return Array.isArray(equipmentusers) ? equipmentusers : [];
+  }
+
   async Delete(id : string, user_id : string){
     const equipmentuser = await this.prisma.equipmentUser.update({
       where: {id : id},
