@@ -8,17 +8,7 @@ export class GetLogService {
   }
 
   async GetLog(many,page) {
-    const all_log = await this.equipmentUserRepository.GetAll();
-    var log = [];
-    if (all_log.length > many) {
-      if (all_log.length > many * page) {
-        var log = all_log.slice(many * (page - 1), many * page);
-      } else {
-        var log = all_log.slice(many * (page - 1), Object.keys(all_log).length);
-      }
-      return log;
-    } else {
-      return all_log;
-    }
+    const all_log = await this.equipmentUserRepository.GetMany(many,(many - 1)*page);
+    return all_log;
   }
 }
