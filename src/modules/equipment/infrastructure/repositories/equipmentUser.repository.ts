@@ -16,11 +16,11 @@ export class EquipmentUserRepository {
     console.log(equipmentuser);
   }
 
-  async GetMany(many : number, page : number){
+  async GetMany(take : number, skip : number){
     const equipmentusers = await this.prisma.equipmentUser.findMany(
       {
-        skip: page,
-        take: many,
+        skip: skip,
+        take: take,
         select: {
           user_id: true,
           equipment_id: true,

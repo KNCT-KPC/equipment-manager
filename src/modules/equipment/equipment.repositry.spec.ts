@@ -5,5 +5,5 @@ describe('EquipmentService', () => {
   it("物品管理", async () => {
     const prisma = new PrismaService();
     const equipmentUserRepository = new EquipmentUserRepository(prisma);
-    expect (await equipmentUserRepository.GetMany(5,1));
+    expect (await equipmentUserRepository.GetMany(5,2));
 })});
