@@ -19,11 +19,18 @@ export class EquipmentService {
     return true;
   }
 
-  async equipmentEdit(dto: EquipmentEditDTO) {
+  async equipmentEdit(dto: EquipmentEditDTO, request_user_id: string) {
+    const equipment = await this.equipmentRepository.GetByEquipmentId(dto.equipment_id);
+    if (!equipment) {
+      return false;
+    }
+    
     await this.equipmentRepository.Update(dto.equipment_id, {
       name: dto.name,
       description: dto.description,
-      amount: dto.amount
+      amount: dto.amount,
+      updated_at: new Date(),
+      update_user_id: request_user_id
     });
 
     return true;
@@ -32,7 +39,7 @@ export class EquipmentService {
   async equipmentDelete(dto: EquipmentDeleteDTO, request_user_id: string) {
     const equipment = await this.equipmentRepository.GetByEquipmentId(dto.equipment_id);
     if (!equipment) {
-      throw new Error("Equipment not found");
+      return false;
     }
 
     await this.equipmentRepository.Delete(equipment.id, request_user_id);
