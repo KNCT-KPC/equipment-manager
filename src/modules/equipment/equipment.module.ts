@@ -7,5 +7,6 @@ import { EquipmentUserRepository } from './infrastructure/repositories/equipment
 @Module({
   controllers: [EquipmentController],
   providers: [EquipmentService, EquipmentRepository, EquipmentUserRepository],
+  exports: [EquipmentService, EquipmentRepository, EquipmentUserRepository]
 })
 export class EquipmentModule {}
