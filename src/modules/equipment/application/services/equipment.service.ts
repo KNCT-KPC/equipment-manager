@@ -5,9 +5,9 @@ import { EquipmentRepository } from "../../infrastructure/repositories/equipment
 export class EquipmentService {
     constructor(private equipmentRepo: EquipmentRepository) {}
 
-    async getEquipmentList(page: number = 1, Limit: number = 10) {
-        const skip = (page -1) * Limit
-        return this.equipmentRepo.findAll(skip, Limit)
+    async getEquipmentList(page: number = 1, limit: number = 10) {
+        const skip = (page -1) * limit
+        return this.equipmentRepo.findAll(skip, limit)
     }
 
     async getEquipmentById(id: string) {
