@@ -10,7 +10,7 @@ export class EquipmentController {
     @Get()
     async getEquipmentList(@Query() query: GetEquipmentListDto) {
         const page = query.page ?? 1
-        const limit = query.limit ?? 10
+        const limit = query.limit ?? Infinity
         return this.equipmentService.findAll(page, limit)
     }
 
