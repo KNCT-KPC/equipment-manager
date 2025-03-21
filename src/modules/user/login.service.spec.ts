@@ -1,3 +1,4 @@
+
 import { AuthenticationIDTokenService } from "./infrastructure/service/login.service";
 import { NestFactory } from "@nestjs/core";
 import { Handler } from "aws-lambda";

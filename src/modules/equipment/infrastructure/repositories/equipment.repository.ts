@@ -45,9 +45,22 @@ export class EquipmentRepository {
     console.log(user_text);
   }
 
+  async findAll(skip: number, take: number){
+    return this.prisma.equipment.findMany({
+      skip,
+      take,
+      where: {
+        deleted_at: null,
+      },
+      orderBy: {
+        created_at: 'desc',
+      },
+    })
+  }
+
   async findById(id: string){
-    return await this.prisma.equipment.findUnique({
+    return this.prisma.equipment.findUnique({
       where: { id },
-    });
+    })
   }
 }
