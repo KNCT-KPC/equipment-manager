@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { Injectable, NotFoundException } from "@nestjs/common";
 import { EquipmentRepository } from "../../infrastructure/repositories/equipment.repository";
 import { EquipmentDeleteDTO, EquipmentEditDTO, EquipmentRegisterDTO } from "../../application/dto/equipment.dto";
 
@@ -22,7 +22,7 @@ export class EquipmentService {
   async equipmentEdit(dto: EquipmentEditDTO, request_user_id: string) {
     const equipment = await this.equipmentRepository.findById(dto.equipment_id);
     if (!equipment) {
-      return false;
+      throw new NotFoundException("Equipment not found");
     }
     
     await this.equipmentRepository.Update(dto.equipment_id, {
@@ -39,7 +39,7 @@ export class EquipmentService {
   async equipmentDelete(dto: EquipmentDeleteDTO, request_user_id: string) {
     const equipment = await this.equipmentRepository.findById(dto.equipment_id);
     if (!equipment) {
-      return false;
+      throw new NotFoundException("Equipment not found");
     }
 
     await this.equipmentRepository.Delete(equipment.id, request_user_id);

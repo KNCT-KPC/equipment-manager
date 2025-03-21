@@ -112,7 +112,7 @@ describe("EquipmentService", () => {
       expect(equipments[0].update_user_id).toBe(request_user_id);
     });
 
-    it("should return false if specified data does not exist", async () => {
+    it("should throw exception if specified data does not exist", async () => {
       equipments = [{
         id: "equipment_id_1",
         name: "Test Equipment",
@@ -131,7 +131,7 @@ describe("EquipmentService", () => {
         name: "Oneko Equipment",
         description: "にゃーん",
         amount: 3
-      }, request_user_id)).resolves.toBe(false);
+      }, request_user_id)).rejects.toThrow("Equipment not found");
     });
   });
 
@@ -159,7 +159,7 @@ describe("EquipmentService", () => {
       expect(equipments[0].delete_user_id).toBe(request_user_id);
     });
 
-    it("should return false if specified data does not exist", async () => {
+    it("should throw exception if specified data does not exist", async () => {
       equipments = [{
         id: "equipment_id_1",
         name: "Test Equipment",
@@ -175,7 +175,7 @@ describe("EquipmentService", () => {
 
       await expect(service.equipmentDelete({
         equipment_id: "equipment_id_555"
-      }, request_user_id)).resolves.toBe(false);
+      }, request_user_id)).rejects.toThrow("Equipment not found");
     });
   });
   

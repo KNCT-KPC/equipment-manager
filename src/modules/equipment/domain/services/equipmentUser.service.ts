@@ -20,7 +20,7 @@ export class EquipmentUserService {
     // 貸出を要求したユーザーがすでに同一物品を借りているか？
     const equipmentUser = await this.equipmentUserRepository.GetByEquipmentIdAndUserId(dto.equipment_id, request_user_id);
     if (equipmentUser && equipmentUser.length > 0) {
-      throw new BadRequestException("You have already rented the same equipment");
+      throw new BadRequestException("Already rented");
     }
     
     // 物品の在庫があるか？

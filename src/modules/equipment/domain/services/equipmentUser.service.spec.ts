@@ -99,17 +99,17 @@ describe("EquipmentService", () => {
       expect(equipmentUsers[0].update_user_id).toBe(request_user_id);
     });
 
-    it("should return false when the equipment is not found", async () => {
-      await expect(service.equipmentRental({ equipment_id: "not_found", amount: 1 }, request_user_id)).resolves.toBe(false);
+    it("should throw exception when the equipment is not found", async () => {
+      await expect(service.equipmentRental({ equipment_id: "not_found", amount: 1 }, request_user_id)).rejects.toThrow("Equipment not found");
     });
 
-    it("should return false when the equipment is out of stock", async () => {
-      await expect(service.equipmentRental({ equipment_id, amount: 11 }, request_user_id)).resolves.toBe(false);
+    it("should throw exception when the equipment is out of stock", async () => {
+      await expect(service.equipmentRental({ equipment_id, amount: 11 }, request_user_id)).rejects.toThrow("Insufficient stock");
     });
 
-    it("should return false when the total rent equipments are out of stock", async () => {
+    it("should throw exception when the total rent equipments are out of stock", async () => {
       await expect(service.equipmentRental({ equipment_id, amount: 6 }, request_user_id)).resolves.toBe(true);
-      await expect(service.equipmentRental({ equipment_id, amount: 11 }, request_user_id + "810")).resolves.toBe(false);
+      await expect(service.equipmentRental({ equipment_id, amount: 11 }, request_user_id + "810")).rejects.toThrow("Insufficient stock");
     });
   });
 });
