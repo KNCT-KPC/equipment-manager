@@ -52,7 +52,7 @@ describe("EquipmentService", () => {
     }];
     equipmentUsers = [];
     equipmentRepository = {
-      GetByEquipmentId: jest.fn().mockImplementation((id: string) => {
+      findById: jest.fn().mockImplementation((id: string) => {
         return equipments.find(equipment => equipment.id === id);
       })
     };

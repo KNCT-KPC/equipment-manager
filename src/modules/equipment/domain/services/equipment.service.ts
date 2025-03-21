@@ -20,7 +20,7 @@ export class EquipmentService {
   }
 
   async equipmentEdit(dto: EquipmentEditDTO, request_user_id: string) {
-    const equipment = await this.equipmentRepository.GetByEquipmentId(dto.equipment_id);
+    const equipment = await this.equipmentRepository.findById(dto.equipment_id);
     if (!equipment) {
       return false;
     }
@@ -37,7 +37,7 @@ export class EquipmentService {
   }
 
   async equipmentDelete(dto: EquipmentDeleteDTO, request_user_id: string) {
-    const equipment = await this.equipmentRepository.GetByEquipmentId(dto.equipment_id);
+    const equipment = await this.equipmentRepository.findById(dto.equipment_id);
     if (!equipment) {
       return false;
     }
