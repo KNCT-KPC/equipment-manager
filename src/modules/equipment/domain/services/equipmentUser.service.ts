@@ -27,7 +27,7 @@ export class EquipmentUserService {
     if (equipment.amount < dto.amount) {
       throw new BadRequestException("Insufficient stock");
     }
-    const remtAmount = await this.equipmentUserRepository.AggregateRentAmounts(dto.equipment_id);
+    const rentAmount = await this.equipmentUserRepository.AggregateRentAmounts(dto.equipment_id);
     if ((remtAmount._sum.amount ?? 0 + dto.amount) > equipment.amount) {
       throw new BadRequestException("Insufficient stock");
     }
