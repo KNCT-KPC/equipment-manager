@@ -8,44 +8,45 @@ export class EquipmentRepository {
     this.prisma = prisma;
   }
 
-  async Create(create_data : Prisma.EquipmentCreateInput){
+  async Create(create_data: Prisma.EquipmentCreateInput) {
     const equipment = await this.prisma.equipment.create({
-      data: create_data
-    })
+      data: create_data,
+    });
     console.log('equipment registered\n');
-    const id_text : string = `id : ${equipment.id}`;
-    const data_text : string = `date : ${equipment}`;
+    const id_text: string = `id : ${equipment.id}`;
+    const data_text: string = `date : ${equipment}`;
     console.log(id_text);
     console.log(data_text);
   }
 
-  async Update(id: string, update : Prisma.EquipmentUpdateInput){
+  async Update(id: string, update: Prisma.EquipmentUpdateInput) {
     const equipment = await this.prisma.equipment.update({
-      where:{id: id},
-      data: update
-    })
+      where: { id: id },
+      data: update,
+    });
     console.log('equipment updated\n');
-    const id_text : string = `id : ${id}`;
-    const date_text : string = `date : ${update}`;
+    const id_text: string = `id : ${id}`;
+    const date_text: string = `date : ${update}`;
     console.log(id_text);
     console.log(date_text);
   }
-  
-  async Delete(id : string, delete_user_id : string){
+
+  async Delete(id: string, delete_user_id: string) {
     const equipment = await this.prisma.equipment.update({
-      where: {id: id},
+      where: { id: id },
       data: {
         deleted_at: new Date(),
-        delete_user_id: delete_user_id}
-    })
+        delete_user_id: delete_user_id,
+      },
+    });
     console.log('equipment deleted\n');
-    const id_text : string = `id : ${id}`;
-    const user_text : string = `delete_user : ${delete_user_id}`;
+    const id_text: string = `id : ${id}`;
+    const user_text: string = `delete_user : ${delete_user_id}`;
     console.log(id_text);
     console.log(user_text);
   }
 
-  async findAll(skip: number, take: number){
+  async findAll(skip: number, take: number) {
     return this.prisma.equipment.findMany({
       skip,
       take,
@@ -55,12 +56,12 @@ export class EquipmentRepository {
       orderBy: {
         created_at: 'desc',
       },
-    })
+    });
   }
 
-  async findById(id: string){
+  async findById(id: string) {
     return this.prisma.equipment.findUnique({
       where: { id },
-    })
+    });
   }
 }
