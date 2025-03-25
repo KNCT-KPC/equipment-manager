@@ -3,7 +3,7 @@ import { NestFactory } from '@nestjs/core';
 import { Handler } from 'aws-lambda';
 import { UserModule } from './user.module';
 
-export const handler: Handler = async (event) => {
+export const handler: Handler = async () => {
   const app = await NestFactory.create(UserModule);
   const authenticationIDTokenService = app.get(AuthenticationIDTokenService);
   await authenticationIDTokenService.getUserIdFromIdToken(
@@ -13,7 +13,7 @@ export const handler: Handler = async (event) => {
 };
 
 describe('LoginService', () => {
-  it('should return userId from idToken', async () => {
-    expect(handler).toBeUndefined;
+  it('should return userId from idToken', () => {
+    expect(handler).toBeUndefined();
   });
 });

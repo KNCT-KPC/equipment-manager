@@ -29,7 +29,7 @@ export class UserRepository {
   }
 
   async Update(id: string, update: Prisma.UserUpdateInput) {
-    const user = await this.prisma.user.update({
+    await this.prisma.user.update({
       where: { id: id },
       data: update,
     });
@@ -41,7 +41,7 @@ export class UserRepository {
   }
 
   async Delete(id: string, delete_user_id: string) {
-    const user = await this.prisma.user.update({
+    await this.prisma.user.update({
       where: { id: id },
       data: {
         deleted_at: new Date(),

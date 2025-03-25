@@ -26,7 +26,7 @@ export class UserRepository {
   }
 
   async Update(id: string, update: Prisma.UserUpdateInput) {
-    const user = await this.prisma.user.update({
+    await this.prisma.user.update({
       where: { id: id },
       data: update,
     });
@@ -38,7 +38,7 @@ export class UserRepository {
   }
 
   async Delete(id: string, delete_user_id: string) {
-    const user = await this.prisma.user.update({
+    await this.prisma.user.update({
       where: { id: id },
       data: {
         deleted_at: new Date(),
@@ -55,11 +55,11 @@ export class UserRepository {
 describe('UserRepository', () => {
   const sum = new UserRepository(new PrismaService());
   it('should create a user', async () => {
-    const createData = {
-      name: 'akaki',
-      create_user_id: '',
-      update_user_id: '',
-    };
+    // const createData = {
+    //   name: 'akaki',
+    //   create_user_id: '',
+    //   update_user_id: '',
+    // };
     const id = '0195792b-8c1d-7ae1-9db1-581da4638838';
 
     expect(await sum.Get(id));

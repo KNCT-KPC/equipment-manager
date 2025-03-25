@@ -1,5 +1,5 @@
 import * as admin from 'firebase-admin';
-import { getApps, getApp } from 'firebase-admin/app';
+import { getApps } from 'firebase-admin/app';
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
@@ -17,7 +17,7 @@ export class FirebaseService {
       admin.initializeApp(firebaseconfig);
     }
   }
-  async getAuth() {
+  getAuth() {
     return admin.auth();
   }
 }

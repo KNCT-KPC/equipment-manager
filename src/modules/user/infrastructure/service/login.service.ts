@@ -7,11 +7,11 @@ export class AuthenticationIDTokenService {
     this.firebase = firebase;
   }
   async getUserIdFromIdToken(idToken: string): Promise<string | null> {
-    const auth = await this.firebase.getAuth();
+    const auth = this.firebase.getAuth();
     try {
       const decodedToken = await auth.verifyIdToken(idToken);
       return decodedToken.uid;
-    } catch (error) {
+    } catch {
       console.log('User Not Found');
       return null;
     }

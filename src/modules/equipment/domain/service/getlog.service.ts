@@ -7,7 +7,7 @@ export class GetLogService {
     this.equipmentUserRepository = equipmentUserRepository;
   }
 
-  async GetLog(many, page) {
+  async GetLog(many: number, page: number) {
     const all_log = await this.equipmentUserRepository.GetMany(
       many,
       (many - 1) * page,

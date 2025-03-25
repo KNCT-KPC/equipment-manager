@@ -5,10 +5,8 @@ import {
   Param,
   ParseUUIDPipe,
   Query,
-  ValidationPipe,
 } from '@nestjs/common';
 import { EquipmentService } from './application/services/equipment.service';
-import { GetEquipmentByIdDto } from './application/dto/get-equipment-by-id.dto';
 import { GetEquipmentListDto } from './application/dto/get-equipment-list.dto';
 
 @Controller('equipment')

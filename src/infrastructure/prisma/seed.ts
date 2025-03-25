@@ -32,7 +32,7 @@ async function main() {
     },
   });
 
-  const login_user1 = await prisma.userLogin.create({
+  await prisma.userLogin.create({
     data: {
       firebase_user_id: 'ozeki',
       user_id: user1.id,
@@ -41,7 +41,7 @@ async function main() {
     },
   });
 
-  const login_user2 = await prisma.userLogin.create({
+  await prisma.userLogin.create({
     data: {
       firebase_user_id: 'sakurai',
       user_id: user2.id,
@@ -50,7 +50,7 @@ async function main() {
     },
   });
 
-  const login_user3 = await prisma.userLogin.create({
+  await prisma.userLogin.create({
     data: {
       firebase_user_id: 'sasaki',
       user_id: user3.id,
@@ -89,7 +89,7 @@ async function main() {
     },
   });
 
-  const rental_equipment1 = await prisma.equipmentUser.create({
+  await prisma.equipmentUser.create({
     data: {
       equipment_id: equipment1.id,
       user_id: user1.id,
@@ -99,7 +99,7 @@ async function main() {
     },
   });
 
-  const rental_equipment2 = await prisma.equipmentUser.create({
+  await prisma.equipmentUser.create({
     data: {
       equipment_id: equipment2.id,
       user_id: user2.id,
@@ -109,7 +109,7 @@ async function main() {
     },
   });
 
-  const rental_equipment3 = await prisma.equipmentUser.create({
+  await prisma.equipmentUser.create({
     data: {
       equipment_id: equipment3.id,
       user_id: user3.id,
@@ -119,11 +119,16 @@ async function main() {
     },
   });
 }
-main()
-  .catch((e) => {
+
+async function mainwrap() {
+  try {
+    await main();
+  } catch (e) {
     console.error(e);
     process.exit(1);
-  })
-  .finally(async () => {
+  } finally {
     await prisma.$disconnect();
-  });
+  }
+}
+
+void mainwrap();

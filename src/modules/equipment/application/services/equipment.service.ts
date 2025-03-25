@@ -1,6 +1,5 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { EquipmentRepository } from '../../infrastructure/repositories/equipment.repository';
-import { NotFoundError } from 'rxjs';
 
 @Injectable()
 export class EquipmentService {
