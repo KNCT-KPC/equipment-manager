@@ -62,7 +62,7 @@ export class EquipmentUserService {
     // 物品の貸出履歴が存在するか？
     const equipmentUser = await this.equipmentUserRepository.GetByEquipmentIdAndUserId(dto.equipment_id, request_user_id);
     if (!equipmentUser || equipmentUser.length === 0) {
-      throw new NotFoundException("Equipment rental history not found");
+      throw new BadRequestException("Equipment not rented");
     }
 
     // 物品を返す
