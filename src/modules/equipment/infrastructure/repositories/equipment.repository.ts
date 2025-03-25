@@ -14,25 +14,25 @@ export class EquipmentRepository {
     });
     console.log('equipment registered\n');
     const id_text: string = `id : ${equipment.id}`;
-    const data_text: string = `date : ${equipment}`;
+    const data_text: string = `date :`;
     console.log(id_text);
-    console.log(data_text);
+    console.log(data_text + JSON.stringify(equipment));
   }
 
   async Update(id: string, update: Prisma.EquipmentUpdateInput) {
-    const equipment = await this.prisma.equipment.update({
+    await this.prisma.equipment.update({
       where: { id: id },
       data: update,
     });
     console.log('equipment updated\n');
     const id_text: string = `id : ${id}`;
-    const date_text: string = `date : ${update}`;
+    const date_text: string = `date : ${JSON.stringify(update)}`;
     console.log(id_text);
     console.log(date_text);
   }
 
   async Delete(id: string, delete_user_id: string) {
-    const equipment = await this.prisma.equipment.update({
+    await this.prisma.equipment.update({
       where: { id: id },
       data: {
         deleted_at: new Date(),
