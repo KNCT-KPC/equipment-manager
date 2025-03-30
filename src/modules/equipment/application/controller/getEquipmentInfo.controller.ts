@@ -1,14 +1,13 @@
-import { Body, Controller, Get, Param } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 import { EquipmentService } from '../services/equipment.service';
-import { GetEquipmentInfoDto } from '../dto/getEquipmentInfo.dto';
 
 @Controller('equipment')
 export class EquipmentController {
   constructor(private readonly equipmentService: EquipmentService) {}
 
   @Get()
-  async GetEquipmentInfoID(@Body() @Param('param') param: GetEquipmentInfoDto) {
-    const data = await this.equipmentService.getEquipmentById(param.id);
+  async GetEquipmentInfoID(@Param('param') param: string) {
+    const data = await this.equipmentService.getEquipmentById(param);
     return (
       data.id,
       data.name,
