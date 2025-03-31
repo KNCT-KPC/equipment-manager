@@ -1,9 +1,11 @@
-import { createParamDecorator, ExecutionContext } from "@nestjs/common";
+import { createParamDecorator, ExecutionContext } from '@nestjs/common';
+import { type CustomRequestObject } from '../types/request';
 
-export const UserId = createParamDecorator((data: unknown, ctx: ExecutionContext) => {
-  const request = ctx.switchToHttp().getRequest();
+export const UserId = createParamDecorator(
+  (data: unknown, ctx: ExecutionContext) => {
+    const request: CustomRequestObject = ctx.switchToHttp().getRequest();
 
-  //NOTE: request.user はミドルウェア等でセットされていることを想定
-  const user = request.user;
-  return user.id;
-});
+    //NOTE: request.userId はミドルウェア等でセットされていることを想定
+    return request.userId;
+  },
+);

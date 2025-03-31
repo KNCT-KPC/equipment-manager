@@ -1,4 +1,3 @@
-
 export class EquipmentUserRentalDTO {
   equipment_id: string;
   amount: number;

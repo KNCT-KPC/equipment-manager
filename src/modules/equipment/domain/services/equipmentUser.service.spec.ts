@@ -1,14 +1,14 @@
-import { EquipmentRepository } from "../../infrastructure/repositories/equipment.repository";
-import { EquipmentUserRepository } from "../../infrastructure/repositories/equipmentUser.repository";
-import { EquipmentUserService } from "./equipmentUser.service";
-import { Prisma } from "@prisma/client";
+import { EquipmentRepository } from '../../infrastructure/repositories/equipment.repository';
+import { EquipmentUserRepository } from '../../infrastructure/repositories/equipmentUser.repository';
+import { EquipmentUserService } from './equipmentUser.service';
+import { Prisma } from '@prisma/client';
 
-describe("EquipmentService", () => {
+describe('EquipmentService', () => {
   let service: EquipmentUserService;
   let equipmentRepository: Partial<EquipmentRepository>;
   let equipmentUserRepository: Partial<EquipmentUserRepository>;
-  const request_user_id = "test_uuid_v7";
-  const equipment_id = "equipment_id_1";
+  const request_user_id = 'test_uuid_v7';
+  const equipment_id = 'equipment_id_1';
 
   // モックが参照するデータ
   let equipments: {
@@ -36,59 +36,83 @@ describe("EquipmentService", () => {
     user_id: string;
   }[] = [];
 
-  beforeEach(async () => {
-    equipments = [{
-      id: equipment_id,
-      name: "Test Equipment",
-      created_at: new Date(),
-      updated_at: new Date(),
-      deleted_at: null,
-      create_user_id: request_user_id,
-      update_user_id: request_user_id,
-      delete_user_id: null,
-      description: "テストなのだ",
-      amount: 10
-    }];
+  beforeEach(() => {
+    equipments = [
+      {
+        id: equipment_id,
+        name: 'Test Equipment',
+        created_at: new Date(),
+        updated_at: new Date(),
+        deleted_at: null,
+        create_user_id: request_user_id,
+        update_user_id: request_user_id,
+        delete_user_id: null,
+        description: 'テストなのだ',
+        amount: 10,
+      },
+    ];
     equipmentUsers = [];
     equipmentRepository = {
       findById: jest.fn().mockImplementation((id: string) => {
-        return equipments.find(equipment => equipment.id === id);
-      })
+        return equipments.find((equipment) => equipment.id === id);
+      }),
     };
     equipmentUserRepository = {
-      AggregateRentAmounts: jest.fn().mockImplementation((equipment_id: string) => {
-        const equipment = equipments.find(equipment => equipment.id === equipment_id);
-        if (!equipment) return { _sum: { amount: 0 } };
-        
-        const rent_amount = equipmentUsers.filter(equipmentUser => equipmentUser.equipment_id === equipment_id).reduce((acc, cur) => acc + cur.amount, 0);
-        return { _sum: { amount: rent_amount } };
-      }),
-      Create: jest.fn().mockImplementation((create_data: Prisma.EquipmentUserCreateInput) => {
-        const data = {
-          id: create_data.id ?? Math.random().toString(36).slice(-8),
-          amount: create_data.amount,
-          created_at: create_data.created_at as Date ?? new Date(),
-          updated_at: create_data.updated_at as Date ?? new Date(),
-          deleted_at: create_data.deleted_at as Date ?? null,
-          create_user_id: create_data.create_user_id,
-          update_user_id: create_data.update_user_id,
-          delete_user_id: create_data.delete_user_id ?? null,
-          equipment_id: create_data.equipment.connect?.id as string,
-          user_id: create_data.user.connect?.id as string
-        }
-        equipmentUsers.push(data);
-      }),
-      GetByEquipmentIdAndUserId: jest.fn().mockImplementation((equipment_id: string, user_id: string) => {
-        return equipmentUsers.filter(equipmentUser => equipmentUser.equipment_id === equipment_id && equipmentUser.user_id === user_id);
-      })
+      AggregateRentAmounts: jest
+        .fn()
+        .mockImplementation((equipment_id: string) => {
+          const equipment = equipments.find(
+            (equipment) => equipment.id === equipment_id,
+          );
+          if (!equipment) return { _sum: { amount: 0 } };
+
+          const rent_amount = equipmentUsers
+            .filter(
+              (equipmentUser) => equipmentUser.equipment_id === equipment_id,
+            )
+            .reduce((acc, cur) => acc + cur.amount, 0);
+          return { _sum: { amount: rent_amount } };
+        }),
+      Create: jest
+        .fn()
+        .mockImplementation((create_data: Prisma.EquipmentUserCreateInput) => {
+          const data = {
+            id: create_data.id ?? Math.random().toString(36).slice(-8),
+            amount: create_data.amount,
+            created_at: (create_data.created_at as Date) ?? new Date(),
+            updated_at: (create_data.updated_at as Date) ?? new Date(),
+            deleted_at: (create_data.deleted_at as Date) ?? null,
+            create_user_id: create_data.create_user_id,
+            update_user_id: create_data.update_user_id,
+            delete_user_id: create_data.delete_user_id ?? null,
+            equipment_id: create_data.equipment.connect?.id as string,
+            user_id: create_data.user.connect?.id as string,
+          };
+          equipmentUsers.push(data);
+        }),
+      GetByEquipmentIdAndUserId: jest
+        .fn()
+        .mockImplementation((equipment_id: string, user_id: string) => {
+          return equipmentUsers.filter(
+            (equipmentUser) =>
+              equipmentUser.equipment_id === equipment_id &&
+              equipmentUser.user_id === user_id,
+          );
+        }),
     };
-    service = new EquipmentUserService(equipmentRepository as EquipmentRepository, equipmentUserRepository as EquipmentUserRepository);
+    service = new EquipmentUserService(
+      equipmentRepository as EquipmentRepository,
+      equipmentUserRepository as EquipmentUserRepository,
+    );
   });
 
-  describe("equipmentRental", () => {
-    it("should return true when rental is successful", async () => {
+  describe('equipmentRental', () => {
+    it('should return true when rental is successful', async () => {
       const amount = 1;
-      const result = await service.equipmentRental({ equipment_id, amount }, request_user_id);
+      const result = await service.equipmentRental(
+        { equipment_id, amount },
+        request_user_id,
+      );
       expect(result).toBe(true);
       expect(equipmentUsers.length).toBe(1);
       expect(equipmentUsers[0].amount).toBe(amount);
@@ -98,17 +122,31 @@ describe("EquipmentService", () => {
       expect(equipmentUsers[0].update_user_id).toBe(request_user_id);
     });
 
-    it("should throw exception when the equipment is not found", async () => {
-      await expect(service.equipmentRental({ equipment_id: "not_found", amount: 1 }, request_user_id)).rejects.toThrow("Equipment not found");
+    it('should throw exception when the equipment is not found', async () => {
+      await expect(
+        service.equipmentRental(
+          { equipment_id: 'not_found', amount: 1 },
+          request_user_id,
+        ),
+      ).rejects.toThrow('Equipment not found');
     });
 
-    it("should throw exception when the equipment is out of stock", async () => {
-      await expect(service.equipmentRental({ equipment_id, amount: 11 }, request_user_id)).rejects.toThrow("Insufficient stock");
+    it('should throw exception when the equipment is out of stock', async () => {
+      await expect(
+        service.equipmentRental({ equipment_id, amount: 11 }, request_user_id),
+      ).rejects.toThrow('Insufficient stock');
     });
 
-    it("should throw exception when the total rent equipments are out of stock", async () => {
-      await expect(service.equipmentRental({ equipment_id, amount: 6 }, request_user_id)).resolves.toBe(true);
-      await expect(service.equipmentRental({ equipment_id, amount: 11 }, request_user_id + "810")).rejects.toThrow("Insufficient stock");
+    it('should throw exception when the total rent equipments are out of stock', async () => {
+      await expect(
+        service.equipmentRental({ equipment_id, amount: 6 }, request_user_id),
+      ).resolves.toBe(true);
+      await expect(
+        service.equipmentRental(
+          { equipment_id, amount: 11 },
+          request_user_id + '810',
+        ),
+      ).rejects.toThrow('Insufficient stock');
     });
   });
 });
