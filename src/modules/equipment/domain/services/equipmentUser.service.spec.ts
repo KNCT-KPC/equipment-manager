@@ -1,7 +1,7 @@
+import { EquipmentUserRentalDTO } from '../../application/dto/equipmentUser.dto';
 import { EquipmentRepository } from '../../infrastructure/repositories/equipment.repository';
 import { EquipmentUserRepository } from '../../infrastructure/repositories/equipmentUser.repository';
 import { EquipmentUserService } from './equipmentUser.service';
-import { Prisma } from '@prisma/client';
 
 describe('EquipmentService', () => {
   let service: EquipmentUserService;
@@ -75,21 +75,28 @@ describe('EquipmentService', () => {
         }),
       Create: jest
         .fn()
-        .mockImplementation((create_data: Prisma.EquipmentUserCreateInput) => {
-          const data = {
-            id: create_data.id ?? Math.random().toString(36).slice(-8),
-            amount: create_data.amount,
-            created_at: (create_data.created_at as Date) ?? new Date(),
-            updated_at: (create_data.updated_at as Date) ?? new Date(),
-            deleted_at: (create_data.deleted_at as Date) ?? null,
-            create_user_id: create_data.create_user_id,
-            update_user_id: create_data.update_user_id,
-            delete_user_id: create_data.delete_user_id ?? null,
-            equipment_id: create_data.equipment.connect?.id as string,
-            user_id: create_data.user.connect?.id as string,
-          };
-          equipmentUsers.push(data);
-        }),
+        .mockImplementation(
+          (
+            create_data: EquipmentUserRentalDTO,
+            user_id: string,
+            req_user_id: string = request_user_id,
+          ) => {
+            console.log(create_data);
+            const data = {
+              id: Math.random().toString(36).slice(-8),
+              amount: create_data.amount,
+              created_at: new Date(),
+              updated_at: new Date(),
+              deleted_at: null,
+              create_user_id: req_user_id,
+              update_user_id: req_user_id,
+              delete_user_id: null,
+              equipment_id: create_data.equipment_id,
+              user_id: user_id,
+            };
+            equipmentUsers.push(data);
+          },
+        ),
       GetByEquipmentIdAndUserId: jest
         .fn()
         .mockImplementation((equipment_id: string, user_id: string) => {
@@ -99,6 +106,19 @@ describe('EquipmentService', () => {
               equipmentUser.user_id === user_id,
           );
         }),
+      Delete: jest
+        .fn()
+        .mockImplementation(
+          (id: string, req_user_id: string = request_user_id) => {
+            const index = equipmentUsers.findIndex(
+              (equipmentUser) => equipmentUser.id === id,
+            );
+            if (index !== -1) {
+              equipmentUsers[index].deleted_at = new Date();
+              equipmentUsers[index].delete_user_id = req_user_id;
+            }
+          },
+        ),
     };
     service = new EquipmentUserService(
       equipmentRepository as EquipmentRepository,
@@ -117,6 +137,9 @@ describe('EquipmentService', () => {
       expect(equipmentUsers.length).toBe(1);
       expect(equipmentUsers[0].amount).toBe(amount);
       expect(equipmentUsers[0].equipment_id).toBe(equipment_id);
+
+      //NOTE: user_id と create_user_id, update_user_id は異なる場合がある．
+      //NOTE: このテストでは同一ユーザーがリクエストしていると仮定する．
       expect(equipmentUsers[0].user_id).toBe(request_user_id);
       expect(equipmentUsers[0].create_user_id).toBe(request_user_id);
       expect(equipmentUsers[0].update_user_id).toBe(request_user_id);
