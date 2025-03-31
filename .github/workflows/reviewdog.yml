@@ -14,3 +14,6 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           reporter: github-pr-review # Change reporter.
           eslint_flags: "\"{src,apps,libs,test}/**/*.ts\""
+          level: "warning"
+          fail_level: "warning"
+          fail_on_error: true
