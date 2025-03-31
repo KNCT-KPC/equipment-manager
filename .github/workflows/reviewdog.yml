@@ -1,0 +1,18 @@
+name: reviewdog
+on: [pull_request]
+jobs:
+  eslint:
+    name: runner / eslint
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
+    steps:
+      - uses: actions/checkout@v4 # v4.2.2
+      - uses: reviewdog/action-eslint@v1 # v1.33.2
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          reporter: github-pr-review # Change reporter.
+          eslint_flags: "\"{src,apps,libs,test}/**/*.ts\""
+          level: "warning"
+          fail_level: "warning"
