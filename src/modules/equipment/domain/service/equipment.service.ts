@@ -8,6 +8,6 @@ export class GetEquipmentService{
   }
   async GetEquipmentList(many,page){
     const list = await this.equipment.GetMany(many,(page - 1)*many);
-    return list;
+    return list
   }
 }
