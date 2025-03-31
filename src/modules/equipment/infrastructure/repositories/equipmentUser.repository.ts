@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../../../infrastructure/prisma/prisma.service';
 import { EquipmentUserRentalDTO } from '../../application/dto/equipmentUser.dto';
+import { UserId } from '../../../../decorators/user-id.decorator';
 
 @Injectable()
 export class EquipmentUserRepository {
@@ -8,7 +9,11 @@ export class EquipmentUserRepository {
     this.prisma = prisma;
   }
 
-  async Create(create_data: EquipmentUserRentalDTO, user_id: string) {
+  async Create(
+    create_data: EquipmentUserRentalDTO,
+    user_id: string,
+    @UserId() request_user_id?: string,
+  ) {
     const equipmentuser = await this.prisma.equipmentUser.create({
       data: {
         equipment: {
@@ -24,8 +29,8 @@ export class EquipmentUserRepository {
         amount: create_data.amount,
         created_at: new Date(),
         updated_at: new Date(),
-        create_user_id: user_id,
-        update_user_id: user_id,
+        create_user_id: request_user_id!,
+        update_user_id: request_user_id!,
       },
     });
     console.log('equipment rented\n');
@@ -48,12 +53,12 @@ export class EquipmentUserRepository {
     return Array.isArray(equipmentusers) ? equipmentusers : [];
   }
 
-  async Delete(id: string, user_id: string) {
+  async Delete(id: string, @UserId() request_user_id?: string) {
     const equipmentuser = await this.prisma.equipmentUser.update({
       where: { id: id },
       data: {
         deleted_at: new Date(),
-        delete_user_id: user_id,
+        delete_user_id: request_user_id,
       },
     });
     console.log('equipment returned\n');
