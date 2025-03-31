@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../../../infrastructure/prisma/prisma.service';
 import { Prisma } from '@prisma/client';
+import { EquipmentUserRentalDTO } from '../../application/dto/equipmentUser.dto';
 
 @Injectable()
 export class EquipmentUserRepository {
@@ -8,9 +9,25 @@ export class EquipmentUserRepository {
     this.prisma = prisma;
   }
 
-  async Create(create_data : Prisma.EquipmentUserCreateInput){
+  async Create(create_data : EquipmentUserRentalDTO, user_id : string) {
     const equipmentuser = await this.prisma.equipmentUser.create({
-      data: create_data
+      data: {
+        equipment: {
+          connect: {
+            id: create_data.equipment_id
+          }
+        },
+        user: {
+          connect: {
+            id: user_id
+          }
+        },
+        amount: create_data.amount,
+        created_at: new Date(),
+        updated_at: new Date(),
+        create_user_id: user_id,
+        update_user_id: user_id
+      }
     })
     console.log('equipment rented\n');
     console.log(equipmentuser);

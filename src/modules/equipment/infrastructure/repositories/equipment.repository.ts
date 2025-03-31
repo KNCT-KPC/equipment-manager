@@ -1,6 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '../../../../infrastructure/prisma/prisma.service';
 import { Prisma } from '@prisma/client';
+import { EquipmentEditDTO, EquipmentRegisterDTO } from '../../application/dto/equipment.dto';
+import { UserId } from '../../../../decorators/user-id.decorator';
 
 @Injectable()
 export class EquipmentRepository {
@@ -8,9 +10,15 @@ export class EquipmentRepository {
     this.prisma = prisma;
   }
 
-  async Create(create_data : Prisma.EquipmentCreateInput){
+  async Create(create_data : EquipmentRegisterDTO, @UserId() user_id?: string){
     const equipment = await this.prisma.equipment.create({
-      data: create_data
+      data: {
+        name: create_data.name,
+        description: create_data.description,
+        amount: create_data.amount,
+        create_user_id: user_id!,
+        update_user_id: user_id!
+      }
     })
     console.log('equipment registered\n');
     const id_text : string = `id : ${equipment.id}`;
@@ -19,19 +27,25 @@ export class EquipmentRepository {
     console.log(data_text);
   }
 
-  async Update(id: string, update : Prisma.EquipmentUpdateInput){
+  async Update(update : EquipmentEditDTO, @UserId() user_id?: string){
     const equipment = await this.prisma.equipment.update({
-      where:{id: id},
-      data: update
+      where:{id: update.equipment_id},
+      data: {
+        name: update.name,
+        description: update.description,
+        amount: update.amount,
+        updated_at: new Date(),
+        update_user_id: user_id
+      }
     })
     console.log('equipment updated\n');
-    const id_text : string = `id : ${id}`;
+    const id_text : string = `id : ${update.equipment_id}`;
     const date_text : string = `date : ${update}`;
     console.log(id_text);
     console.log(date_text);
   }
   
-  async Delete(id : string, delete_user_id : string){
+  async Delete(id : string, @UserId() delete_user_id? : string){
     const equipment = await this.prisma.equipment.update({
       where: {id: id},
       data: {

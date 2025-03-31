@@ -1,4 +1,3 @@
-import e from "express";
 import { EquipmentRepository } from "../../infrastructure/repositories/equipment.repository";
 import { EquipmentUserRepository } from "../../infrastructure/repositories/equipmentUser.repository";
 import { EquipmentUserService } from "./equipmentUser.service";

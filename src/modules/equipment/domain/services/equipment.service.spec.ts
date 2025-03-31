@@ -1,6 +1,6 @@
-import { Prisma } from "@prisma/client";
 import { EquipmentRepository } from "../../infrastructure/repositories/equipment.repository";
 import { EquipmentService } from "./equipment.service";
+import { EquipmentEditDTO, EquipmentRegisterDTO } from "../../application/dto/equipment.dto";
 
 describe("EquipmentService", () => {
   let service: EquipmentService;
@@ -25,36 +25,36 @@ describe("EquipmentService", () => {
 
     // EquipmentRepository のモックを実装
     equipmentRepository = {
-      Create: jest.fn().mockImplementation((create_data: Prisma.EquipmentCreateInput) => {
+      Create: jest.fn().mockImplementation((create_data: EquipmentRegisterDTO, user_id?: string) => {
         const data = {
-          id: create_data.id ?? Math.random().toString(36).slice(-8),
+          id: Math.random().toString(36).slice(-8),
           name: create_data.name,
           description: create_data.description ?? null,
           amount: create_data.amount,
-          created_at: create_data.created_at as Date ?? new Date(),
-          updated_at: create_data.updated_at as Date ?? new Date(),
-          deleted_at: create_data.deleted_at as Date ?? null,
-          create_user_id: create_data.create_user_id,
-          update_user_id: create_data.update_user_id,
-          delete_user_id: create_data.delete_user_id ?? null,
+          created_at: new Date(),
+          updated_at: new Date(),
+          deleted_at: null,
+          create_user_id: user_id ?? request_user_id,
+          update_user_id: user_id ?? request_user_id,
+          delete_user_id: null,
         }
         equipments.push(data);
       }),
-      Update: jest.fn().mockImplementation((id: string, update: Prisma.EquipmentUpdateInput) => {
-        const equipment = equipments.find(equipment => equipment.id === id);
+      Update: jest.fn().mockImplementation((update: EquipmentEditDTO, user_id?: string) => {
+        const equipment = equipments.find(equipment => equipment.id === update.equipment_id);
         if (equipment) {
           equipment.name = update.name as string;
           equipment.description = update.description as string;
           equipment.amount = update.amount as number;
           equipment.updated_at = new Date();
-          equipment.update_user_id = update.update_user_id as string
+          equipment.update_user_id = user_id ?? request_user_id;
         }
       }),
-      Delete: jest.fn().mockImplementation((id: string, delete_user_id: string) => {
+      Delete: jest.fn().mockImplementation((id: string, delete_user_id?: string) => {
         const equipment = equipments.find(equipment => equipment.id === id);
         if (equipment) {
           equipment.deleted_at = new Date();
-          equipment.delete_user_id = delete_user_id;
+          equipment.delete_user_id = delete_user_id ?? request_user_id;
         }
       }),
       findById: jest.fn().mockImplementation((id: string) => {
@@ -72,7 +72,7 @@ describe("EquipmentService", () => {
         name: "test",
         description: "テスト物品",
         amount: 2
-      }, request_user_id)).resolves.toBe(true);
+      })).resolves.toBe(true);
       
       expect(equipments.length).toBe(1);
       expect(equipments[0].name).toBe("test");
@@ -102,7 +102,7 @@ describe("EquipmentService", () => {
         name: "Oneko Equipment",
         description: "にゃーん",
         amount: 3
-      }, request_user_id)).resolves.toBe(true);
+      })).resolves.toBe(true);
 
       expect(equipments.length).toBe(1);
       expect(equipments[0].name).toBe("Oneko Equipment");
@@ -131,7 +131,7 @@ describe("EquipmentService", () => {
         name: "Oneko Equipment",
         description: "にゃーん",
         amount: 3
-      }, request_user_id)).rejects.toThrow("Equipment not found");
+      })).rejects.toThrow("Equipment not found");
     });
   });
 
@@ -152,7 +152,7 @@ describe("EquipmentService", () => {
 
       await expect(service.equipmentDelete({
         equipment_id: "equipment_id_1"
-      }, request_user_id)).resolves.toBe(true);
+      })).resolves.toBe(true);
 
       expect(equipments.length).not.toBe(0);
       expect(equipments[0].deleted_at).not.toBeNull();
@@ -175,7 +175,7 @@ describe("EquipmentService", () => {
 
       await expect(service.equipmentDelete({
         equipment_id: "equipment_id_555"
-      }, request_user_id)).rejects.toThrow("Equipment not found");
+      })).rejects.toThrow("Equipment not found");
     });
   });
   

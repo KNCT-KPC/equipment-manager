@@ -1,4 +1,4 @@
-import { BadRequestException, HttpException, Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { EquipmentUserRepository } from "../../infrastructure/repositories/equipmentUser.repository";
 import { EquipmentRepository } from "../../infrastructure/repositories/equipment.repository";
 import { EquipmentUserRentalDTO, EquipmentUserReturnDTO } from "../../application/dto/equipmentUser.dto";
@@ -28,26 +28,12 @@ export class EquipmentUserService {
       throw new BadRequestException("Insufficient stock");
     }
     const rentAmount = await this.equipmentUserRepository.AggregateRentAmounts(dto.equipment_id);
-    if ((remtAmount._sum.amount ?? 0 + dto.amount) > equipment.amount) {
+    if ((rentAmount._sum.amount ?? 0 + dto.amount) > equipment.amount) {
       throw new BadRequestException("Insufficient stock");
     }
 
     // 物品を借りる
-    this.equipmentUserRepository.Create({
-      equipment: {
-        connect: {
-          id: dto.equipment_id
-        }
-      },
-      user: {
-        connect: {
-          id: request_user_id
-        }
-      },
-      amount: dto.amount,
-      create_user_id: request_user_id,
-      update_user_id: request_user_id
-    });
+    this.equipmentUserRepository.Create(dto, request_user_id);
 
     return true;
   }
