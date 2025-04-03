@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { EquipmentController } from './equipment.controller';
-import { EquipmentService } from './application/services/equipment.service';
+import { EquipmentController } from './application/controller/equipment.controller';
+import { EquipmentService } from './domain/service/equipment.service';
 import { EquipmentRepository } from './infrastructure/repositories/equipment.repository';
 import { EquipmentUserRepository } from './infrastructure/repositories/equipmentUser.repository';
 
