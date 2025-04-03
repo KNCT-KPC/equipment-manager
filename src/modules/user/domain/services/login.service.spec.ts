@@ -1,7 +1,7 @@
-import { AuthenticationIDTokenService } from './infrastructure/service/login.service';
+import { AuthenticationIDTokenService } from './login.service';
 import { NestFactory } from '@nestjs/core';
 import { Handler } from 'aws-lambda';
-import { UserModule } from './user.module';
+import { UserModule } from '../../user.module';
 
 export const handler: Handler = async () => {
   const app = await NestFactory.create(UserModule);
