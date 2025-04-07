@@ -6,8 +6,8 @@ import {
   ParseUUIDPipe,
   Query,
 } from '@nestjs/common';
-import { EquipmentService } from './application/services/equipment.service';
-import { GetEquipmentListDto } from './application/dto/get-equipment-list.dto';
+import { EquipmentService } from '../../domain/service/equipment.service';
+import { GetEquipmentListDto } from '../dto/get-equipment-list.dto';
 
 @Controller('equipment')
 export class EquipmentController {
@@ -31,5 +31,18 @@ export class EquipmentController {
       });
     }
     return item;
+  }
+
+  @Get()
+  async GetEquipmentInfoID(@Param('param') param: string) {
+    const data = await this.equipmentService.getEquipmentById(param);
+    return (
+      data.id,
+      data.name,
+      data.description,
+      data.amount,
+      data.created_at,
+      data.updated_at
+    );
   }
 }

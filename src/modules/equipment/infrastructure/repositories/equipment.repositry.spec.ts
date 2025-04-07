@@ -1,5 +1,5 @@
-import { PrismaService } from '../../infrastructure/prisma/prisma.service';
-import { EquipmentUserRepository } from './infrastructure/repositories/equipmentUser.repository';
+import { PrismaService } from '../../../../infrastructure/prisma/prisma.service';
+import { EquipmentUserRepository } from './equipmentUser.repository';
 
 describe('EquipmentService', () => {
   it('物品管理', async () => {

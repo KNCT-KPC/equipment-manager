@@ -1,6 +1,6 @@
-import { EquipmentUserRepository } from '../infrastructure/repositories/equipmentUser.repository';
-import { PrismaService } from '../../../infrastructure/prisma/prisma.service';
-import { GetLogService } from './service/getlog.service';
+import { EquipmentUserRepository } from '../../infrastructure/repositories/equipmentUser.repository';
+import { PrismaService } from '../../../../infrastructure/prisma/prisma.service';
+import { GetLogService } from './getlog.service';
 
 describe('GetLogService', () => {
   it('GetLog', async () => {
