@@ -6,9 +6,9 @@ export class EquipmentRegisterDTO {
 
 export class EquipmentEditDTO {
   equipment_id: string;
-  name: string;
-  description: string;
-  amount: number;
+  name?: string;
+  description?: string;
+  amount?: number;
 }
 
 export class EquipmentDeleteDTO {

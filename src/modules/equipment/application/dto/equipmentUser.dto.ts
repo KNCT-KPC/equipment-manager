@@ -3,6 +3,10 @@ export class EquipmentUserRentalDTO {
   amount: number;
 }
 
+export class EquipmentUserRentalRequestDTO {
+  amount: number;
+}
+
 export class EquipmentUserReturnDTO {
   equipment_id: string;
 }
