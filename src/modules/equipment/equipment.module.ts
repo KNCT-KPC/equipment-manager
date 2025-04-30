@@ -7,7 +7,17 @@ import { EquipmentUserService } from './domain/services/equipmentUser.service';
 
 @Module({
   controllers: [EquipmentController],
-  providers: [EquipmentService, EquipmentUserService, EquipmentRepository, EquipmentUserRepository],
-  exports: [EquipmentService, EquipmentUserService, EquipmentRepository, EquipmentUserRepository],
+  providers: [
+    EquipmentService,
+    EquipmentUserService,
+    EquipmentRepository,
+    EquipmentUserRepository,
+  ],
+  exports: [
+    EquipmentService,
+    EquipmentUserService,
+    EquipmentRepository,
+    EquipmentUserRepository,
+  ],
 })
 export class EquipmentModule {}

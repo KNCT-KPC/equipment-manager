@@ -11,22 +11,27 @@ import {
   Post,
   Put,
   Query,
+  UseGuards,
 } from '@nestjs/common';
 import { EquipmentService } from '@/modules/equipment/domain/services/equipment.service';
 import { GetEquipmentListDto } from '../dto/get-equipment-list.dto';
-import { EquipmentDeleteDTO, EquipmentEditDTO, EquipmentRegisterDTO } from '../dto/equipment.dto';
+import { EquipmentEditDTO, EquipmentRegisterDTO } from '../dto/equipment.dto';
 import { EquipmentUserService } from '@modules/equipment/domain/services/equipmentUser.service';
 import { UserId } from '@decorators/user-id.decorator';
-import { EquipmentUserRentalDTO, EquipmentUserRentalRequestDTO } from '../dto/equipmentUser.dto';
+import { EquipmentUserRentalRequestDTO } from '../dto/equipmentUser.dto';
+import { TokenGuard } from '@guards/user_auth.guard';
 
 @Controller('equipment')
 export class EquipmentController {
-  constructor(private readonly equipmentService: EquipmentService, private readonly equipmentUserService: EquipmentUserService) {}
+  constructor(
+    private readonly equipmentService: EquipmentService,
+    private readonly equipmentUserService: EquipmentUserService,
+  ) {}
 
   @Get()
   async getEquipmentList(@Query() query: GetEquipmentListDto) {
     const page = query.page ?? 1;
-    const limit = Number(query.limit) ?? Infinity;
+    const limit = Number(query.limit ?? 10);
     return this.equipmentService.findAll(page, limit);
   }
 
@@ -57,19 +62,28 @@ export class EquipmentController {
   }
 
   @Post()
+  @UseGuards(TokenGuard)
   async registerEquipmentInfo(@Body() dto: EquipmentRegisterDTO) {
     const data = await this.equipmentService.equipmentRegister(dto);
     return {
-      id: data.id
-    }
+      id: data.id,
+    };
   }
 
   @Put(':id')
+  @UseGuards(TokenGuard)
   @HttpCode(204)
-  async editEquipmentInfo(@Param('id', ParseUUIDPipe) id, @Body() dto: EquipmentEditDTO) {
-    if (dto.amount == undefined && dto.description == undefined && dto.name == undefined) {
+  async editEquipmentInfo(
+    @Param('id', ParseUUIDPipe) id,
+    @Body() dto: EquipmentEditDTO,
+  ) {
+    if (
+      dto.amount == undefined &&
+      dto.description == undefined &&
+      dto.name == undefined
+    ) {
       throw new BadRequestException({
-        message: "Empty field"
+        message: 'Empty field',
       });
     }
 
@@ -77,27 +91,43 @@ export class EquipmentController {
   }
 
   @Delete(':id')
+  @UseGuards(TokenGuard)
   @HttpCode(204)
-  async deleteEquipmentInfo(@Param('id', ParseUUIDPipe) id) {
+  async deleteEquipmentInfo(@Param('id', ParseUUIDPipe) id: string) {
     await this.equipmentService.equipmentDelete({
-      equipment_id: id
+      equipment_id: id,
     });
   }
 
   @Post(':id/rental')
+  @UseGuards(TokenGuard)
   @HttpCode(204)
-  async rentalEquipment(@Param('id', ParseUUIDPipe) equipment_id, @Body() dto: EquipmentUserRentalRequestDTO, @UserId() uid) {
-    await this.equipmentUserService.equipmentRental({
-      equipment_id: equipment_id,
-      amount: dto.amount
-    }, uid);
+  async rentalEquipment(
+    @Param('id', ParseUUIDPipe) equipment_id: string,
+    @Body() dto: EquipmentUserRentalRequestDTO,
+    @UserId() uid: string,
+  ) {
+    await this.equipmentUserService.equipmentRental(
+      {
+        equipment_id: equipment_id,
+        amount: dto.amount,
+      },
+      uid,
+    );
   }
 
   @Post(':id/return')
+  @UseGuards(TokenGuard)
   @HttpCode(204)
-  async returnEquipment(@Param('id', ParseUUIDPipe) equipment_id, @UserId() uid) {
-    await this.equipmentUserService.equipmentReturn({
-      equipment_id: equipment_id,
-    }, uid);
+  async returnEquipment(
+    @Param('id', ParseUUIDPipe) equipment_id: string,
+    @UserId() uid: string,
+  ) {
+    await this.equipmentUserService.equipmentReturn(
+      {
+        equipment_id: equipment_id,
+      },
+      uid,
+    );
   }
 }
