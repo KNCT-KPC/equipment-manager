@@ -2,12 +2,13 @@ import {
   Injectable,
   ExecutionContext,
   UnauthorizedException,
+  CanActivate,
 } from '@nestjs/common';
 import { AuthenticationIDTokenService } from 'src/modules/user/domain/services/login.service';
 import { CustomRequestObject } from 'src/types/request';
 
 @Injectable()
-export class TokenGuard {
+export class TokenGuard implements CanActivate {
   constructor(
     private readonly authenticationIDTokenService: AuthenticationIDTokenService,
   ) {
@@ -22,7 +23,8 @@ export class TokenGuard {
       throw new UnauthorizedException('User not authenticated. Please log in.');
     } else if (typeof user == 'string') {
       request.userId = user;
-      return request;
+      return true;
     }
+    return false;
   }
 }
