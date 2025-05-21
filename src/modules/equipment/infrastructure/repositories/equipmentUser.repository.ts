@@ -92,4 +92,11 @@ export class EquipmentUserRepository {
       },
     });
   }
+
+  async getHistoryByEquipmentId(equipmentId: string) {
+    return this.prisma.equipmentUser.findMany({
+      where: { equipment_id: equipmentId },
+      orderBy: { created_at: 'desc' },
+    });
+  }
 }

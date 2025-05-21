@@ -1,9 +1,13 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { EquipmentRepository } from '../../infrastructure/repositories/equipment.repository';
+import { EquipmentUserRepository } from '../../infrastructure/repositories/equipmentUser.repository';
 
 @Injectable()
 export class EquipmentService {
-  constructor(private readonly equipmentRepo: EquipmentRepository) {}
+  constructor(
+    private readonly equipmentRepo: EquipmentRepository,
+    private readonly equipmentUserRepository: EquipmentUserRepository,
+  ) {}
 
   async findAll(page: number, limit: number) {
     const skip = (page - 1) * limit;
@@ -30,5 +34,18 @@ export class EquipmentService {
       });
     }
     return item;
+  }
+
+  async getEquipmentHistory(equipmentId: string) {
+    const history =
+      await this.equipmentUserRepository.getHistoryByEquipmentId(equipmentId);
+
+    if (!history || history.length === 0) {
+      throw new NotFoundException({
+        statusCode: 404,
+        message: `No rental history found for equipment ID ${equipmentId}`,
+      });
+    }
+    return history;
   }
 }
