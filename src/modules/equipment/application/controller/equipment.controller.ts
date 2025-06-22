@@ -48,6 +48,11 @@ export class EquipmentController {
     return item;
   }
 
+  @Get(':id/history')
+  async getEquipmentHistory(@Param('id') id: string) {
+    return this.equipmentService.getEquipmentHistory(id);
+  }
+
   @Get()
   async GetEquipmentInfoID(@Param('param') param: string) {
     const data = await this.equipmentService.getEquipmentById(param);
