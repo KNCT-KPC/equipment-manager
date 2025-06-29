@@ -82,12 +82,52 @@ entity organization_user as "組織所属リスト" {
   delete_user_id: uuidv7 <<NULLABLE>>
 }
 
+entity organization_equipment as "組織物品リスト" {
+  id: uuidv7 <<PK>>
+  --
+  organization_id: uuidv7 <<FK>>
+  equipment_id: uuidv7 <<FK>>
+  created_at: datetime 
+  updated_at: datetime
+  deleted_at: datetime <<NULLABLE>>
+  create_user_id: uuidv7
+  update_user_id: uuidv7
+  delete_user_id: uuidv7 <<NULLABLE>>
+}
+
+entity roles as "ロールマスタ" {
+  id: uuidv7 <<PK>>
+  --
+  name: string
+  created_at: datetime 
+  updated_at: datetime
+  deleted_at: datetime <<NULLABLE>>
+}
+
+entity user_roles as "ユーザーロール" {
+  id: uuidv7 <<PK>>
+  --
+  user_id: uuidv7 <<FK>>
+  organization_id: uuidv7 <<FK>> <<NULLABLE>>
+  role_id: uuidv7 <<FK>>
+  created_at: datetime 
+  updated_at: datetime
+  deleted_at: datetime <<NULLABLE>>
+  create_user_id: uuidv7
+  update_user_id: uuidv7
+  delete_user_id: uuidv7 <<NULLABLE>>
+}
 
 user ||--|| user_login
 user ||--o{ equipment_user
 equipment ||--o{ equipment_user
 organization ||--o{ organization_user
-organization_user }--|| user
+organization_user }o--|| user
+organization ||--o{ organization_equipment
+organization_equipment }--|| equipment
+organization ||--{ user_roles
+user ||--o{ user_roles
+roles ||--o{ user_roles
 
 /'
     ### cardinality ###
