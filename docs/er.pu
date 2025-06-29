@@ -102,6 +102,9 @@ entity roles as "ロールマスタ" {
   created_at: datetime 
   updated_at: datetime
   deleted_at: datetime <<NULLABLE>>
+  create_user_id: uuidv7
+  update_user_id: uuidv7
+  delete_user_id: uuidv7 <<NULLABLE>>
 }
 
 entity user_roles as "ユーザーロール" {
