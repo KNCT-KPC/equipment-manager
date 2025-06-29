@@ -27,6 +27,7 @@ export class EquipmentRepository {
     const data_text: string = `date :`;
     console.log(id_text);
     console.log(data_text + JSON.stringify(equipment));
+    return equipment;
   }
 
   async Update(update: EquipmentEditDTO, @UserId() user_id?: string) {
