@@ -75,4 +75,8 @@ export class EquipmentUserService {
 
     return true;
   }
+
+  async getOverdueEquipments() {
+    return await this.equipmentUserRepository.findOverdue();
+  }
 }
