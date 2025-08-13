@@ -99,4 +99,19 @@ export class EquipmentUserRepository {
       orderBy: { created_at: 'desc' },
     });
   }
+
+  async findOverdue() {
+    return this.prisma.equipmentUser.findMany({
+      where: {
+        due_date: {
+          lt: new Date(),
+        },
+        deleted_at: null,
+      },
+      include: {
+        equipment: true,
+        user: true,
+      },
+    });
+  }
 }

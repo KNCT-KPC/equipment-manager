@@ -135,4 +135,13 @@ export class EquipmentController {
       uid,
     );
   }
+
+  @Get('overdue')
+  async getOverdueEquipments() {
+    const overdue = await this.equipmentUserService.getOverdueEquipments();
+    if (!overdue || overdue.length === 0) {
+      return { message: 'No overdue equipment' };
+    }
+    return overdue;
+  }
 }

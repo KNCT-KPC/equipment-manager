@@ -53,7 +53,7 @@ model Equipment {
 }
 
 model  EquipmentUser {
-  id  String  @id  @default(uuid(7)) 
+  id  String  @id  @default(uuid(7))
   user  User  @relation(fields: [user_id],references: [id])
   user_id  String
   equipment  Equipment  @relation(fields: [equipment_id],references: [id])
@@ -62,7 +62,8 @@ model  EquipmentUser {
   created_at  DateTime  @default(now())
   updated_at  DateTime  @updatedAt
   deleted_at  DateTime?
-  create_user_id  String 
+  due_date DateTime
+  create_user_id  String
   update_user_id  String
-  delete_user_id  String? 
+  delete_user_id  String?
 }
